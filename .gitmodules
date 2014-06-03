@@ -4,3 +4,9 @@
 [submodule "src/lib/hump"]
 	path = src/lib/hump
 	url = git@github.com:vrld/hump.git
+[submodule "src/lib/underscore.lua"]
+	path = src/lib/underscore.lua
+	url = git@github.com:mirven/underscore.lua.git
+[submodule "src/lib/underscore"]
+	path = src/lib/underscore
+	url = https://github.com/mirven/underscore.lua
