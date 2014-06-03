@@ -14,7 +14,7 @@ function love.load()
     engine:call("config", engine, {
         worldScale = 1,
         gravity = {0, -10},
-        backgroundColor = {0, 0, 0},
+        backgroundColor = {0, 30, 60},
         foregroundColor = {150, 150, 150}
     })
 
