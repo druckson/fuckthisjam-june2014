@@ -1,24 +1,29 @@
+local _ = require "lib/underscore/lib/underscore"
 local Class = require "lib/hump/class"
+local System = require "systems/system"
 
 local Graphics = Class{
+    __includes = System,
     init = function(self)
-        self.entities = {}
+        System.init(self)
     end
 }
 
-function Graphics:config(data)
-    
+function Graphics:config(engine, data)
+    self.backgroundColor = data.backgroundColor
+    self.foregroundColor = data.foregroundColor
 end
 
 function Graphics:draw()
     love.graphics.reset()
-    love.graphics.setBackgroundColor(1, 16, 19)
+    love.graphics.setBackgroundColor(unpack(self.backgroundColor))
 
-    love.graphics.setColor(150, 150, 150)
+    _.each(self.entities, function(entity)
+        love.graphics.
+    end)
+
+    love.graphics.setColor(unpack(self.foregroundColor))
     love.graphics.print("FPS: "..love.timer.getFPS(), 10, 10)
-
-    --love.graphics.print("> "..self.message, 10, 30)
-    --loveframes.draw()
 end
 
 return Graphics

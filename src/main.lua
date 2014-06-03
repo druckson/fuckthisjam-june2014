@@ -1,18 +1,27 @@
 local Engine = require "engine"
---local Input = require "systems/input"
 local Graphics = require "systems/graphics"
+local Physics = require "systems/physics"
+local _ = require "lib/underscore/lib/underscore"
 
 local engine = Engine()
 
 function love.load()
-    --engine:addSystem("input", Input())
+    -- Create systems
+    engine:addSystem("physics", Physics())
     engine:addSystem("graphics", Graphics())
-end
 
-function love.update(dt)
-    engine:update(dt)
-end
+    -- Configure systems
+    engine:call("config", engine, {
+        worldScale = 1,
+        gravity = {0, -10},
+        backgroundColor = {0, 0, 0},
+        foregroundColor = {150, 150, 150}
+    })
 
-function love.draw()
-    engine:draw()
+    -- Wire up love calls
+    _.each({"update", "draw"}, function(func)
+        love[func] = function(...)
+            engine:call(func, ...)
+        end
+    end)
 end
