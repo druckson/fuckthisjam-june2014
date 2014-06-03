@@ -27,8 +27,11 @@ function Graphics:draw()
     love.graphics.translate(self.cameraPosition:unpack())
 
     _.each(self.entities, function(entity)
-        --love.graphics.
         love.graphics.translate((-entity.transform.position):unpack())
+        if entity.graphics.type == "circle" then
+            r = entity.graphics.radius
+            love.graphics.circle("fill", -r/2, -r/2, r, 20)
+        end
     end)
     love.graphics.pop()
 

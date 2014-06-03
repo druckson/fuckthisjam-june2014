@@ -4,17 +4,33 @@ require "lib/json"
 
 local Engine = Class{
     init = function(self)
+        self.entities = {}
         self.systems = {}
         self.systemsByName = {}
+        self.nextEntity = 0
     end
 }
 
 function Engine:createEntity(data)
-    
+    entity = self.nextEntity
+    self.nextEntity = self.nextEntity+1
+
+    table.insert(self.entities, entity)
+    self:call("createEntity", entity, data)
+
+    return entity
 end
 
 function Engine:removeEntity(entity)
     self:call("removeEntity", entity)
+    table.remove(self.entities, entity)
+end
+
+function Engine:clear()
+    _.each(self.entities, function(entity)
+        self:removeEntity(entity)
+    end)
+    self.entities = {}
 end
 
 function Engine:addSystem(name, system)
