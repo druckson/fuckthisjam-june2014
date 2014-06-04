@@ -1,0 +1,35 @@
+{
+    "prefabs": {
+        "ball": {
+            "graphics": {
+                "type": "circle",
+                "radius": 1
+            },
+            "physics": {
+                "mass": 1
+            }
+        }
+    },
+    "entities": [
+        {
+            "prefab": "ball",
+            "transform": {
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "rotation": 0
+            }
+        },
+        {
+            "prefab": "ball",
+            "transform": {
+                "position": {
+                    "x": 1,
+                    "y": 0
+                },
+                "rotation": 0
+            }
+        }
+    ]
+}
