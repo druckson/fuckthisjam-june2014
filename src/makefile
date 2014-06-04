@@ -8,7 +8,7 @@
 	zip -r ../build/ftj14.love *
 
 run: ~/Dropbox/FuckThisJam2014/builds/ftj14.love
-	love-hg ~/Dropbox/FuckThisJam2014/builds/ftj14.love
+	love ~/Dropbox/FuckThisJam2014/builds/ftj14.love
 
 clean:
 	rm ~/Dropbox/FuckThisJam2014/builds/ftj14.love
