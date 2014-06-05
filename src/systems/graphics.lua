@@ -15,9 +15,10 @@ local Graphics = Class{
 }
 
 function Graphics:addEntity(entity, entityData, data)
-    System.addEntity(self, entity, entityData, data)
-    entityData.current.graphics = data.graphics
-    print("Adding graphics "..#self.entities)
+    if data.graphics and data.transform then
+        System.addEntity(self, entity, entityData, data)
+        entityData.current.graphics = data.graphics
+    end
 end
 
 function Graphics:config(engine, data)
