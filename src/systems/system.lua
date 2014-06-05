@@ -6,8 +6,8 @@ local System = Class {
     end
 }
 
-function System:addEntity(entity, data)
-    self.entities[entity] = data
+function System:addEntity(entity, entityData, data)
+    self.entities[entity] = entityData
 end
 
 function System:removeEntity(entity)
