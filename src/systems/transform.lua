@@ -10,11 +10,13 @@ local Transform = Class{
 }
 
 function Transform:addEntity(entity, entityData, data)
-    System.addEntity(self, entity, entityData, data)
-    entityData.current.transform = {
-        position = vector(data.transform.position.x, data.transform.position.y),
-        rotation = data.transform.rotation
-    }
+    if data.transform then
+        System.addEntity(self, entity, entityData, data)
+        entityData.current.transform = {
+            position = vector(data.transform.position.x, data.transform.position.y),
+            rotation = data.transform.rotation
+        }
+    end
 end
 
 return Transform
