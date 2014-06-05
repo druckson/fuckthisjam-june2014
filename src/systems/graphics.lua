@@ -9,7 +9,7 @@ local Graphics = Class{
         System.init(self)
         self.cameraPosition = vector(0, 0)
         self.cameraRotation = 0
-        self.scale = 50
+        self.scale = 5
         self.fullscreen = false
     end
 }
@@ -78,12 +78,18 @@ function Graphics:draw()
 
     love.graphics.setColor(unpack(self.foregroundColor))
     _.each(self.entities, function(entity)
+        love.graphics.push()
         love.graphics.translate((entity.current.transform.position):unpack())
+        love.graphics.setColor(unpack(self.foregroundColor))
         if entity.current.graphics.type == "circle" then
             r = entity.current.graphics.radius
-            love.graphics.setColor(unpack(self.foregroundColor))
             love.graphics.circle("fill", 0, 0, r, 20)
+        elseif entity.current.graphics.type == "rect" then
+            w = entity.current.graphics.width
+            h = entity.current.graphics.height
+            love.graphics.rectangle("fill", -w/2, -h/2, w, h)
         end
+        love.graphics.pop()
     end)
     love.graphics.pop()
 
