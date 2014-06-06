@@ -14,7 +14,7 @@ function newShape(data)
 end
 
 local Physics = Class{
-    _includes = System,
+    __includes = System,
     init = function(self)
         System.init(self)
         self.world = love.physics.newWorld(0, 0, true)

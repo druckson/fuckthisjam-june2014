@@ -23,6 +23,7 @@ function Graphics:addEntity(entity, entityData, data)
 end
 
 function Graphics:config(engine, data)
+    self.engine = engine
     self.backgroundColor = data.backgroundColor
     self.foregroundColor = data.foregroundColor
 end
@@ -33,6 +34,14 @@ function Graphics:resize(width, height)
     love.window.setMode(width, height, {
         fullscreen = self.fullscreen
     })
+end
+
+function Graphics:mousepressed(x, y, key)
+    local width = love.graphics.getWidth()
+    local height = love.graphics.getHeight()
+    local cx = (x - width/2) / self.scale - self.cameraPosition.x
+    local cy = (y - height/2) / self.scale - self.cameraPosition.y
+    self.engine:call("mousepressed_world", cx, cy, key)
 end
 
 function Graphics:keypressed(key)
