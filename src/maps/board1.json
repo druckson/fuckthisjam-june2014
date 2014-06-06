@@ -83,15 +83,31 @@
             "transform": {
                 "position": {
                     "x": 0,
-                    "y": 0
+                    "y": 4.75
                 },
                 "rotation": 0
             },
             "graphics": {
                 "type": "rect",
-                "width": 10,
-                "height": 20,
-                "color": [100, 100, 100, 255]
+                "width": 9,
+                "height": 9.5,
+                "color": [0, 100, 0, 255]
+            }
+        },
+        {
+            "background": true,
+            "transform": {
+                "position": {
+                    "x": 0,
+                    "y": -4.75
+                },
+                "rotation": 0
+            },
+            "graphics": {
+                "type": "rect",
+                "width": 9,
+                "height": 9.5,
+                "color": [100, 0, 0, 255]
             }
         },
         {
@@ -100,6 +116,16 @@
                 "position": {
                     "x": 0,
                     "y": 0
+                },
+                "rotation": 0
+            }
+        },
+        {
+            "prefab": "ball",
+            "transform": {
+                "position": {
+                    "x": 0,
+                    "y": 1
                 },
                 "rotation": 0
             }

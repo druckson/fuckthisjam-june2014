@@ -24,13 +24,12 @@ local Physics = Class{
 function Physics:config(engine, data)
     self.engine = engine
     love.physics.setMeter(data.worldScale)
-    self.world:setGravity(unpack(data.gravity))
+    self.gravity = data.gravity
 end
 
 function Physics:addEntity(entity, entityData, data)
     if data.physics and data.transform then
         System.addEntity(self, entity, entityData, data)
-        print("Physics")
 
         local body = love.physics.newBody(self.world,
             data.transform.position.x,
@@ -49,8 +48,14 @@ end
 function Physics:update(dt)
     self.world:update(dt)
     _.each(self.entities, function(entity)
-        entity.current.transform.position = vector(entity.current.physics.body:getPosition())
-        entity.current.transform.rotation = entity.current.physics.body:getAngle()
+        body = entity.current.physics.body
+        if entity.current.transform.position.y > 0 then
+            body:applyForce(0,  self.gravity)
+        else
+            body:applyForce(0, -self.gravity)
+        end
+        entity.current.transform.position = vector(body:getPosition())
+        entity.current.transform.rotation = body:getAngle()
     end)
 end
 

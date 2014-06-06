@@ -9,7 +9,7 @@ local Graphics = Class{
         System.init(self)
         self.cameraPosition = vector(0, 0)
         self.cameraRotation = 0
-        self.scale = 5
+        self.scale = 10
         self.fullscreen = false
     end
 }
