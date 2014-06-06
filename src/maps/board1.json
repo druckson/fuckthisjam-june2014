@@ -14,12 +14,7 @@
                 }
             }
         },
-        "side": {
-            "graphics": {
-                "type": "rect",
-                "width": 10,
-                "height": 1
-            },
+        "side1": {
             "physics": {
                 "mass": 1
                 "type": "static"
@@ -29,9 +24,76 @@
                     "height": 1
                 }
             }
+        },
+        "side2": {
+            "physics": {
+                "mass": 1
+                "type": "static"
+                "shape": {
+                    "type": "rect",
+                    "width": 1,
+                    "height": 20
+                }
+            }
         }
     },
     "entities": [
+        {
+            "prefab": "side1",
+            "transform": {
+                "position": {
+                    "x": 0,
+                    "y": -10
+                },
+                "rotation": 0
+            }
+        },
+        {
+            "prefab": "side1",
+            "transform": {
+                "position": {
+                    "x": 0,
+                    "y": 10
+                },
+                "rotation": 0
+            }
+        },
+        {
+            "prefab": "side2",
+            "transform": {
+                "position": {
+                    "x": -5,
+                    "y": 0 
+                },
+                "rotation": 0
+            }
+        },
+        {
+            "prefab": "side2",
+            "transform": {
+                "position": {
+                    "x": 5,
+                    "y": 0 
+                },
+                "rotation": 0
+            }
+        },
+        {
+            "background": true,
+            "transform": {
+                "position": {
+                    "x": 0,
+                    "y": 0
+                },
+                "rotation": 0
+            },
+            "graphics": {
+                "type": "rect",
+                "width": 10,
+                "height": 20,
+                "color": [100, 100, 100, 255]
+            }
+        },
         {
             "prefab": "ball",
             "transform": {
@@ -46,18 +108,8 @@
             "prefab": "ball",
             "transform": {
                 "position": {
-                    "x": 0.1,
+                    "x": 1,
                     "y": -2
-                },
-                "rotation": 0
-            }
-        },
-        {
-            "prefab": "side",
-            "transform": {
-                "position": {
-                    "x": 0,
-                    "y": 2
                 },
                 "rotation": 0
             }
