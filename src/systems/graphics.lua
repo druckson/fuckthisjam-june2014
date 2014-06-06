@@ -81,6 +81,11 @@ function Graphics:draw()
         love.graphics.push()
         love.graphics.translate((entity.current.transform.position):unpack())
         love.graphics.setColor(unpack(self.foregroundColor))
+
+        if entity.current.graphics.color then
+            love.graphics.setColor(unpack(entity.current.graphics.color))
+        end
+
         if entity.current.graphics.type == "circle" then
             r = entity.current.graphics.radius
             love.graphics.circle("fill", 0, 0, r, 20)
