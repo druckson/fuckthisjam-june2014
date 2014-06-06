@@ -28,9 +28,9 @@ function Physics:config(engine, data)
 end
 
 function Physics:addEntity(entity, entityData, data)
-    print(json.encode(data))
     if data.physics and data.transform then
         System.addEntity(self, entity, entityData, data)
+        print("Physics")
 
         local body = love.physics.newBody(self.world,
             data.transform.position.x,

@@ -26,7 +26,6 @@ function MapLoader:loadMap(file)
 
     if map.entities then
         _.each(map.entities, function(entityData)
-            print("Adding entity")
             self.engine:createEntity(self:prefab(entityData, map.prefabs))
         end)
     end
