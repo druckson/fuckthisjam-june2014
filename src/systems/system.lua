@@ -14,7 +14,11 @@ function System:addEntity(entity, entityData, data)
 end
 
 function System:removeEntity(entity)
-    table.remove(self.entities, self.entityIDs[entity])
+    for i, e in pairs(self.entities) do
+        if e == entity then
+            table.remove(self.entities, i)
+        end
+    end
     self.entityIDs[entity] = nil
 end
 

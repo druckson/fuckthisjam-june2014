@@ -25,9 +25,13 @@ function MapLoader:loadMap(file)
     local map = json.decode(data)
 
     if map.entities then
-        _.each(map.entities, function(entityData)
+        
+        for name, entityData in pairs(map.entities) do
             self.engine:createEntity(self:prefab(entityData, map.prefabs))
-        end)
+        end
+        --_.each(map.entities, function(entityData)
+        --    self.engine:createEntity(self:prefab(entityData, map.prefabs))
+        --end)
     end
 
     --if map.audio then

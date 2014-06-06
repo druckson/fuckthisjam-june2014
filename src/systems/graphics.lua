@@ -2,6 +2,7 @@ local _ = require "lib/underscore/lib/underscore"
 local Class = require "lib/hump/class"
 local System = require "systems/system"
 local vector = require "lib/hump/vector"
+local sort = require "utils/sort"
 
 local Graphics = Class{
     __includes = System,
@@ -76,8 +77,16 @@ function Graphics:draw()
     love.graphics.translate(self.cameraPosition:unpack())
     love.graphics.rotate(self.cameraRotation)
 
+    self.entities = sort(self.entities, function(e)
+        local layer = e.current.graphics.layer
+        if layer then
+            return layer
+        end
+        return 0
+    end)
+
     love.graphics.setColor(unpack(self.foregroundColor))
-    _.each(self.entities, function(entity)
+    for i, entity in pairs(self.entities) do
         love.graphics.push()
         love.graphics.translate((entity.current.transform.position):unpack())
         love.graphics.setColor(unpack(self.foregroundColor))
@@ -95,7 +104,7 @@ function Graphics:draw()
             love.graphics.rectangle("fill", -w/2, -h/2, w, h)
         end
         love.graphics.pop()
-    end)
+    end
     love.graphics.pop()
 
     love.graphics.setColor(unpack(self.foregroundColor))

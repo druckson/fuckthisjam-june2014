@@ -47,7 +47,7 @@ end
 
 function Physics:update(dt)
     self.world:update(dt)
-    _.each(self.entities, function(entity)
+    for i, entity in pairs(self.entities) do
         body = entity.current.physics.body
         if entity.current.transform.position.y > 0 then
             body:applyForce(0,  self.gravity)
@@ -56,7 +56,7 @@ function Physics:update(dt)
         end
         entity.current.transform.position = vector(body:getPosition())
         entity.current.transform.rotation = body:getAngle()
-    end)
+    end
 end
 
 return Physics

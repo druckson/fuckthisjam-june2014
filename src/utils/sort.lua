@@ -1,4 +1,4 @@
-function checkSorted(list, valueFunction)
+local function checkSorted(list, valueFunction)
     local last = nil
 
     for _, item in pairs(list) do
@@ -12,17 +12,19 @@ function checkSorted(list, valueFunction)
     return true
 end
 
-function merge(l1, l2, valueFunction)
+local function merge(l1, l2, valueFunction)
     local i1 = 1
     local i2 = 1
     local l3 = {}
 
     while true do
-        local v1 = valueFunction(l1[i1])
-        local v2 = valueFunction(l2[i2])
+        local v1 = l1[i1]
+        local v2 = l2[i2]
 
         if v1 and v2 then
-            if v1 < v2 then
+            k1 = valueFunction(v1)
+            k2 = valueFunction(v2)
+            if k1 < k2 then
                 table.insert(l3, v1)
                 i1 = i1 + 1
             else
@@ -45,7 +47,7 @@ function merge(l1, l2, valueFunction)
     return l3
 end
 
-function mergeSortRecursive(list, first, last, valueFunction)
+local function mergeSortRecursive(list, first, last, valueFunction)
     if last < first then
         return {}
     elseif first == last then
@@ -59,14 +61,15 @@ function mergeSortRecursive(list, first, last, valueFunction)
     return merge(list1, list2, valueFunction)
 end
 
-function mergeSort(list, valueFunction)
+local function mergeSort(list, valueFunction)
     return mergeSortRecursive(list, 1, #list, valueFunction)
 end
 
-function sort(list, valueFunction)
+local function sort(list, valueFunction)
     if not checkSorted(list, valueFunction) then
         return mergeSort(list, valueFunction)
     end
+    return list
 end
 
 return sort

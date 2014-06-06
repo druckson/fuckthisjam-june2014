@@ -2,6 +2,7 @@
     "prefabs": {
         "ball": {
             "graphics": {
+                "layer": 2,
                 "type": "circle",
                 "radius": 1
             },
@@ -37,8 +38,8 @@
             }
         }
     },
-    "entities": [
-        {
+    "entities": {
+        "left-side": {
             "prefab": "side1",
             "transform": {
                 "position": {
@@ -48,7 +49,7 @@
                 "rotation": 0
             }
         },
-        {
+        "right-side": {
             "prefab": "side1",
             "transform": {
                 "position": {
@@ -58,7 +59,7 @@
                 "rotation": 0
             }
         },
-        {
+        "top-side": {
             "prefab": "side2",
             "transform": {
                 "position": {
@@ -68,7 +69,7 @@
                 "rotation": 0
             }
         },
-        {
+        "bottom-side": {
             "prefab": "side2",
             "transform": {
                 "position": {
@@ -78,7 +79,7 @@
                 "rotation": 0
             }
         },
-        {
+        "top-half": {
             "background": true,
             "transform": {
                 "position": {
@@ -94,7 +95,7 @@
                 "color": [0, 100, 0, 255]
             }
         },
-        {
+        "bottom-half": {
             "background": true,
             "transform": {
                 "position": {
@@ -104,23 +105,24 @@
                 "rotation": 0
             },
             "graphics": {
+                "layer": 1,
                 "type": "rect",
                 "width": 9,
                 "height": 9.5,
                 "color": [100, 0, 0, 255]
             }
         },
-        {
+        "ball1": {
             "prefab": "ball",
             "transform": {
                 "position": {
-                    "x": 0,
-                    "y": 0
+                    "x": 1,
+                    "y": 1
                 },
                 "rotation": 0
             }
         },
-        {
+        "ball2": {
             "prefab": "ball",
             "transform": {
                 "position": {
@@ -129,16 +131,6 @@
                 },
                 "rotation": 0
             }
-        },
-        {
-            "prefab": "ball",
-            "transform": {
-                "position": {
-                    "x": 1,
-                    "y": -2
-                },
-                "rotation": 0
-            }
         }
-    ]
+    }
 }
