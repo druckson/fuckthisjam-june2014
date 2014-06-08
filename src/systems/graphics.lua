@@ -44,7 +44,7 @@ function Graphics:mousepressed(x, y, key)
     self.engine:call("mousepressed_world", cx, cy, key)
 end
 
-function Graphics:keypressed(key)
+function Graphics:keycommand(key)
     if key == "f" then
         self.fullscreen = not self.fullscreen
         love.window.setMode(love.graphics.getWidth(), love.graphics.getHeight(), {
@@ -53,27 +53,32 @@ function Graphics:keypressed(key)
     end
 end
 
-function Graphics:update(dt)
+function Graphics:keyheld(dt, keys)
     speed = 1
     turnSpeed = 1
-    if love.keyboard.isDown("w") then
+
+    if keys("w") then
         self.cameraPosition.y = self.cameraPosition.y + dt*speed
     end
-    if love.keyboard.isDown("s") then
+    if keys("s") then
         self.cameraPosition.y = self.cameraPosition.y - dt*speed
     end
-    if love.keyboard.isDown("a") then
+    if keys("a") then
         self.cameraPosition.x = self.cameraPosition.x + dt*speed
     end
-    if love.keyboard.isDown("d") then
+    if keys("d") then
         self.cameraPosition.x = self.cameraPosition.x - dt*speed
     end
-    if love.keyboard.isDown("q") then
+    if keys("q") then
         self.cameraRotation = self.cameraRotation + dt*turnSpeed
     end
-    if love.keyboard.isDown("e") then
+    if keys("e") then
         self.cameraRotation = self.cameraRotation - dt*turnSpeed
     end
+end
+
+function Graphics:debug_print(f)
+    f("FPS: "..love.timer.getFPS())
 end
 
 function Graphics:draw()
@@ -117,7 +122,12 @@ function Graphics:draw()
     love.graphics.pop()
 
     love.graphics.setColor(unpack(self.foregroundColor))
-    love.graphics.print("FPS: "..love.timer.getFPS(), 10, 10)
+
+    local offset = 10
+    self.engine:call("debug_print", function(message)
+        love.graphics.print(message, 10, offset)
+        offset = offset + 10
+    end)
 end
 
 return Graphics
