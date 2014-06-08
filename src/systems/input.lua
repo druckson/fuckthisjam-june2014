@@ -16,7 +16,7 @@ end
 
 function Input:debug_print(f)
     f("Command state: "..self.state)
-    f("Current comman: '"..self.current_command.."'")
+    f("Current command: '"..self.current_command.."'")
 end
 
 function Input:set_state(state)
