@@ -5,25 +5,21 @@ local System = require "systems/system"
 local MapCreator = Class{
     __includes = System,
     init = function(self)
-        
+        self.current_prefab = ""
     end
 }
 
 function MapCreator:config(engine, data)
     self.engine = engine
 
+    self.prefabs = data.prefabs
+
     -- create vertical grid lines
     engine:createEntity({
-        transform = {
-            position = {
-                x = 0,
-                y = 0
-            },
-            rotation = 0
-        },
         graphics = {
             type = "line",
-            repeatX = 5,
+            repeatX = 1,
+            repeatY = 1,
             width = 1
         }
     })

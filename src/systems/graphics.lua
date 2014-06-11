@@ -16,7 +16,7 @@ local Graphics = Class{
 }
 
 function Graphics:addEntity(entity, entityData, data)
-    if data.graphics and data.transform then
+    if data.graphics then
         System.addEntity(self, entity, entityData, data)
         entityData.current.graphics = data.graphics
     end
@@ -29,14 +29,15 @@ function Graphics:config(engine, data)
 end
 
 function Graphics:resize(width, height)
-    self.width = width
-    self.height = height
+    self.cameraSize = vector(width, height)
     love.window.setMode(width, height, {
         fullscreen = self.fullscreen
     })
 end
 
 function Graphics:mousepressed(x, y, key)
+    local screenSpace = vector(x, y)
+    local worldSpace = (screenSpace - self.cameraSize/2) / self.scale - self.cameraPosition
     local width = love.graphics.getWidth()
     local height = love.graphics.getHeight()
     local cx = (x - width/2) / self.scale - self.cameraPosition.x
@@ -44,7 +45,7 @@ function Graphics:mousepressed(x, y, key)
     self.engine:call("mousepressed_world", cx, cy, key)
 end
 
-function Graphics:keycommand(key)
+function Graphics:key_command(key)
     if key == "f" then
         self.fullscreen = not self.fullscreen
         love.window.setMode(love.graphics.getWidth(), love.graphics.getHeight(), {
@@ -53,9 +54,10 @@ function Graphics:keycommand(key)
     end
 end
 
-function Graphics:keyheld(dt, keys)
-    speed = 1
+function Graphics:key_held(dt, keys)
+    speed = 10
     turnSpeed = 1
+    zoomSpeed = 0.99
 
     if keys("w") then
         self.cameraPosition.y = self.cameraPosition.y + dt*speed
@@ -69,12 +71,21 @@ function Graphics:keyheld(dt, keys)
     if keys("d") then
         self.cameraPosition.x = self.cameraPosition.x - dt*speed
     end
+
+    self.engine:call("camera_changed", self.cameraPosition)
+
     if keys("q") then
-        self.cameraRotation = self.cameraRotation + dt*turnSpeed
+        --self.cameraRotation = self.cameraRotation + dt*turnSpeed
+        self.scale = self.scale * zoomSpeed
     end
     if keys("e") then
-        self.cameraRotation = self.cameraRotation - dt*turnSpeed
+        --self.cameraRotation = self.cameraRotation - dt*turnSpeed
+        self.scale = self.scale / zoomSpeed
     end
+end
+
+function Graphics:camera_changed(cameraPosition)
+    
 end
 
 function Graphics:debug_print(f)
@@ -102,7 +113,11 @@ function Graphics:draw()
     love.graphics.setColor(unpack(self.foregroundColor))
     for i, entity in pairs(self.entities) do
         love.graphics.push()
-        love.graphics.translate((entity.current.transform.position):unpack())
+
+        if entity.current.transform then
+            love.graphics.translate((entity.current.transform.position):unpack())
+        end
+
         love.graphics.setColor(unpack(self.foregroundColor))
 
         if entity.current.graphics.color then
@@ -110,12 +125,64 @@ function Graphics:draw()
         end
 
         if entity.current.graphics.type == "circle" then
-            r = entity.current.graphics.radius
+            local r = entity.current.graphics.radius
             love.graphics.circle("fill", 0, 0, r, 20)
         elseif entity.current.graphics.type == "rect" then
-            w = entity.current.graphics.width
-            h = entity.current.graphics.height
+            local w = entity.current.graphics.width
+            local h = entity.current.graphics.height
             love.graphics.rectangle("fill", -w/2, -h/2, w, h)
+        elseif entity.current.graphics.type == "line" then
+            local lower_bound = -self.cameraPosition - (self.cameraSize/self.scale/2)
+            local upper_bound = -self.cameraPosition + (self.cameraSize/self.scale/2)
+
+            local repeatX = entity.current.graphics.repeatX
+            local repeatY = entity.current.graphics.repeatY
+
+            while repeatX < 10/self.scale do
+                repeatX = repeatX * 2
+            end
+
+            while repeatX > 10/self.scale do
+                repeatX = repeatX / 2 
+            end
+
+            while repeatY < 10/self.scale do
+                repeatY = repeatY * 2
+            end
+
+            while repeatY > 10/self.scale do
+                repeatY = repeatY / 2 
+            end
+
+            local function closest_lower(start, dist, target)
+                while start <= target do
+                    start = start + dist
+                end
+
+                while start > target do
+                    start = start - dist
+                end
+
+                return start
+            end
+
+            if repeatX then
+                local current = closest_lower(0, repeatX, lower_bound.x)
+                while current < upper_bound.x do
+                    love.graphics.setLineWidth(1/self.scale)
+                    love.graphics.line(current, lower_bound.y, current, upper_bound.y)
+                    current = current + repeatX
+                end
+            end
+
+            if repeatY then
+                local current = closest_lower(0, repeatY, lower_bound.y)
+                while current < upper_bound.y do
+                    love.graphics.setLineWidth(1/self.scale)
+                    love.graphics.line(lower_bound.x, current, upper_bound.x, current)
+                    current = current + repeatY
+                end
+            end
         end
         love.graphics.pop()
     end
