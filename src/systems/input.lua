@@ -1,4 +1,5 @@
 local Class = require "lib/hump/class"
+local toarray = require "utils/toarray"
 
 local STATE_COMMAND = "command"
 local STATE_NORMAL = "normal"
@@ -41,7 +42,8 @@ function Input:keypressed(key)
         if key == "escape" then
             self:set_state(STATE_NORMAL)
         elseif key == "return" then
-            self.engine:call("process_command", string.gmatch(self.current_command, "%S+"))
+            local command = toarray(string.gmatch(self.current_command, "%S+"))
+            self.engine:call("process_command", command)
             self:set_state(STATE_NORMAL)
         elseif string.len(key) == 1 then
             self.current_command = self.current_command..key
