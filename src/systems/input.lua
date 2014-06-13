@@ -33,7 +33,7 @@ end
 
 function Input:keypressed(key)
     if self.state == STATE_NORMAL then
-        if key == "escape" then
+        if key == ";" then
             self:set_state(STATE_COMMAND)
         else
             self.engine:call("key_command", key)
@@ -41,6 +41,8 @@ function Input:keypressed(key)
     elseif self.state == STATE_COMMAND then
         if key == "escape" then
             self:set_state(STATE_NORMAL)
+        elseif key == "backspace" then
+            self.current_command = string.sub(self.current_command, 0, #self.current_command-1)
         elseif key == "return" then
             local command = toarray(string.gmatch(self.current_command, "%S+"))
             self.engine:call("process_command", command)
