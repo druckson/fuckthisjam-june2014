@@ -1,10 +1,12 @@
 local _ = require "lib/underscore/lib/underscore"
 local Class = require "lib/hump/class"
 local System = require "systems/system"
+local prefab = require "utils/prefab"
 
 local MapCreator = Class{
     __includes = System,
     init = function(self)
+        System.init(self)
         self.prefabs = {}
         self.entityData = {}
         self.current_prefab = ""
@@ -19,6 +21,7 @@ function MapCreator:config(engine, data)
         meta = true,
         graphics = {
             type = "line",
+            color = {255, 255, 255, 50},
             repeatX = 1,
             repeatY = 1,
             width = 1
@@ -30,36 +33,23 @@ function MapCreator:addPrefab(name, data)
     self.prefabs[name] = data
 end
 
-function MapCreator:addEntity(entity, entityData, data)
-    self.entityData[entity] = data
-end
-
-function MapCreator:removeEntity(entity)
-    self.entityData[entity] = nil
-end
-
-function MapCreator:save(filename)
-    love.filesystem.write(filename, {
-        prefabs =  self.prefabs,
-        entities = self.entityData
-    })
+function MapCreator:marshallEntity(entity, data)
+    if self.entities[entity] then
+        data.meta = self.entities[entity].current.meta
+    end
 end
 
 function MapCreator:mousepressed_world(x, y, button)
-    self.engine:createEntity({
+    self.engine:createEntity(prefab({
+        prefab = "ball",
         transform = {
             position = {
                 x = x,
                 y = y
             },
             rotation = 0
-        },
-        graphics = {
-            type = "rect",
-            width = 1,
-            height = 1
         }
-    })
+    }, self.prefabs))
 end
 
 function MapCreator:process_command(value)
