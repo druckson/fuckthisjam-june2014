@@ -4,12 +4,11 @@ local Graphics = require "systems/graphics"
 local Physics = require "systems/physics"
 local Transform = require "systems/transform"
 local MapCreator = require "systems/map-creator"
+local MapLoader = require "systems/map-loader"
 local Input = require "systems/input"
-local MapLoader = require "maploader"
 local _ = require "lib/underscore/lib/underscore"
 
 local engine = Engine()
-local loader = MapLoader(engine)
 
 function love.load()
     -- Create systems
@@ -17,6 +16,7 @@ function love.load()
     engine:addSystem("physics", Physics())
     engine:addSystem("graphics", Graphics())
     engine:addSystem("map-creator", MapCreator())
+    engine:addSystem("map-loader", MapLoader())
     engine:addSystem("input", Input())
 
     -- Configure systems
@@ -34,5 +34,5 @@ function love.load()
         end
     end)
 
-    --loader:loadMap("board1")
+    engine:call("load", "board1")
 end
