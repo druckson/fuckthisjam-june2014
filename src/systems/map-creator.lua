@@ -5,6 +5,8 @@ local System = require "systems/system"
 local MapCreator = Class{
     __includes = System,
     init = function(self)
+        self.prefabs = {}
+        self.entityData = {}
         self.current_prefab = ""
     end
 }
@@ -12,10 +14,9 @@ local MapCreator = Class{
 function MapCreator:config(engine, data)
     self.engine = engine
 
-    self.prefabs = data.prefabs
-
-    -- create vertical grid lines
+    -- create grid lines
     engine:createEntity({
+        meta = true,
         graphics = {
             type = "line",
             repeatX = 1,
@@ -25,8 +26,23 @@ function MapCreator:config(engine, data)
     })
 end
 
+function MapCreator:addPrefab(name, data)
+    self.prefabs[name] = data
+end
+
 function MapCreator:addEntity(entity, entityData, data)
-    
+    self.entityData[entity] = data
+end
+
+function MapCreator:removeEntity(entity)
+    self.entityData[entity] = nil
+end
+
+function MapCreator:save(filename)
+    love.filesystem.write(filename, {
+        prefabs =  self.prefabs,
+        entities = self.entityData
+    })
 end
 
 function MapCreator:mousepressed_world(x, y, button)
@@ -46,7 +62,13 @@ function MapCreator:mousepressed_world(x, y, button)
     })
 end
 
-function MapCreator:keypressed(k)
+function MapCreator:process_command(value)
+    print(value)
+    if value[0] == "setprefab" then
+        if #value > 1 then
+            self.current_prefab = value[1]
+        end
+    end
 end
 
 return MapCreator
