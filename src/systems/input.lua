@@ -41,7 +41,7 @@ function Input:keypressed(key)
         if key == "escape" then
             self:set_state(STATE_NORMAL)
         elseif key == "return" then
-            self.engine:call("process_command", current_command)
+            self.engine:call("process_command", string.gmatch(self.current_command, "%S+"))
             self:set_state(STATE_NORMAL)
         elseif string.len(key) == 1 then
             self.current_command = self.current_command..key
