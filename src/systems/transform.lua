@@ -9,6 +9,14 @@ local Transform = Class{
     end
 }
 
+function Transform:marshallEntity(entity, data)
+    local transform = self.entities[entity].current.transform
+    data.transform = {
+        position = {transform.position:unpack()},
+        rotation = transform.rotation
+    }
+end
+
 function Transform:addEntity(entity, entityData, data)
     if data.transform then
         System.addEntity(self, entity, entityData, data)
