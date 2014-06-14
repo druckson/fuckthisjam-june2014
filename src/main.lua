@@ -5,8 +5,8 @@ local Physics = require "systems/physics"
 local Transform = require "systems/transform"
 local MapCreator = require "systems/map-creator"
 local MapLoader = require "systems/map-loader"
+local MapSaver = require "systems/map-saver"
 local Input = require "systems/input"
-local _ = require "lib/underscore/lib/underscore"
 
 local engine = Engine()
 
@@ -17,6 +17,7 @@ function love.load()
     engine:addSystem("graphics", Graphics())
     engine:addSystem("map-creator", MapCreator())
     engine:addSystem("map-loader", MapLoader())
+    engine:addSystem("map-saver", MapSaver())
     engine:addSystem("input", Input())
 
     -- Configure systems
@@ -28,11 +29,13 @@ function love.load()
     })
 
     -- Wire up love calls
-    _.each({"update", "draw", "resize", "focus", "visible", "keypressed", "keyreleased", "joystickpressed", "joystickreleased", "joystickaxis", "joystickhat", "mousefocus", "mousepressed", "mousereleased", "quit"}, function(func)
-        love[func] = function(...)
-            engine:call(func, ...)
+    local calls = {"update", "draw", "resize", "focus", "visible", "keypressed", "keyreleased", "joystickpressed", "joystickreleased", "joystickaxis", "joystickhat", "mousefocus", "mousepressed", "mousereleased", "quit"}
+    
+    for _, call in pairs(calls) do
+        love[call] = function(...)
+            engine:call(call, ...)
         end
-    end)
+    end
 
     engine:call("load", "board1")
 end

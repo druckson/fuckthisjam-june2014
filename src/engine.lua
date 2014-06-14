@@ -1,4 +1,3 @@
-local _ = require "lib/underscore/lib/underscore"
 local Class = require "lib/hump/class"
 require "lib/json"
 
@@ -30,9 +29,9 @@ function Engine:removeEntity(entity)
 end
 
 function Engine:clear()
-    _.each(self.entities, function(entity)
+    for _, entity in pairs(self.entities) do
         self:removeEntity(entity)
-    end)
+    end
     self.entities = {}
 end
 
@@ -42,19 +41,16 @@ function Engine:addSystem(name, system)
 end
 
 function Engine:update(dt)
-    _.each(self.entities, function(entityData)
-        
-    end)
 end
 
 function Engine:call(name, ...)
     local args = {...}
 
-    _.each(self.systems, function(system)
+    for _, system in pairs(self.systems) do
         if system[name] ~= nil then
             system[name](system, unpack(args))
         end
-    end)
+    end
 end
 
 return Engine
