@@ -1,4 +1,3 @@
-local _ = require "lib/underscore/lib/underscore"
 local Class = require "lib/hump/class"
 local System = require "systems/system"
 local vector = require "lib/hump/vector"
@@ -12,13 +11,22 @@ local Graphics = Class{
         self.cameraRotation = 0
         self.scale = 10
         self.fullscreen = false
+        self.entities_sorted = {}
     end
 }
 
 function Graphics:addEntity(entity, entityData, data)
     if data.graphics then
         System.addEntity(self, entity, entityData, data)
+        table.insert(self.entities_sorted, entity)
         entityData.current.graphics = data.graphics
+    end
+end
+
+function Graphics:marshallEntity(entity, data)
+    if self.entities[entity] then
+        local graphics = self.entities[entity].current.graphics
+        data.graphics = graphics
     end
 end
 
@@ -102,8 +110,9 @@ function Graphics:draw()
     love.graphics.translate(self.cameraPosition:unpack())
     love.graphics.rotate(self.cameraRotation)
 
-    self.entities = sort(self.entities, function(e)
-        local layer = e.current.graphics.layer
+    local this = self
+    self.entities_sorted = sort(self.entities_sorted, function(e)
+        local layer = this.entities[e].current.graphics.layer
         if layer then
             return layer
         end
@@ -111,7 +120,8 @@ function Graphics:draw()
     end)
 
     love.graphics.setColor(unpack(self.foregroundColor))
-    for i, entity in pairs(self.entities) do
+    for i, e in pairs(self.entities_sorted) do
+        local entity = self.entities[e]
         love.graphics.push()
 
         if entity.current.transform then
