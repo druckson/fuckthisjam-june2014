@@ -1,4 +1,3 @@
-local _ = require "lib/underscore/lib/underscore"
 local Class = require "lib/hump/class"
 local System = require "systems/system"
 local prefab = require "utils/prefab"
@@ -53,7 +52,6 @@ function MapCreator:mousepressed_world(x, y, button)
 end
 
 function MapCreator:process_command(value)
-    print(value)
     if value[0] == "setprefab" then
         if #value > 1 then
             self.current_prefab = value[1]
