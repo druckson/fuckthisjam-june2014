@@ -64,7 +64,7 @@ function Graphics:mousepressed(x, y, key)
 end
 
 function Graphics:input_start(input)
-    if key == "f" then
+    if input == "fullscreen" then
         self.fullscreen = not self.fullscreen
         love.window.setMode(love.graphics.getWidth(), love.graphics.getHeight(), {
             fullscreen = self.fullscreen

@@ -48,6 +48,15 @@ function Input:bindKey(key, input)
     self.key_bindings[key] = input
 end
 
+function Input:process_command(command)
+    if command[1] == "bindKey" then
+        if #command == 3 then
+            print("Bound key "..command[2].." to "..command[3])
+            self.engine:call("bindKey", command[2], command[3])
+        end
+    end
+end
+
 function Input:keypressed(key)
     if self.state == STATE_NORMAL then
         if key == ";" then
@@ -67,6 +76,10 @@ function Input:keypressed(key)
             self.engine:call("process_command", command)
             self:set_state(STATE_NORMAL)
         elseif string.len(key) == 1 then
+            if love.keyboard.isDown("lshift") or
+                love.keyboard.isDown("rshift") then
+                key = string.upper(key)
+            end
             self.current_command = self.current_command..key
         end
     end
@@ -75,7 +88,7 @@ end
 function Input:keyreleased(key)
     if self.state == STATE_NORMAL then    
         if self.key_bindings[key] then
-            self.engine:call("input_start", self.key_bindings[key])
+            self.engine:call("input_end", self.key_bindings[key])
         end
     end
 end

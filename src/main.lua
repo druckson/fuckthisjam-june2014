@@ -33,6 +33,7 @@ function love.load()
             d = "right",
             q = "zoomOut",
             e = "zoomIn",
+            f = "fullscreen",
             escape = "quit"
         }
     })
