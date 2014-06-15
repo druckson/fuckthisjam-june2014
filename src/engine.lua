@@ -24,15 +24,17 @@ function Engine:createEntity(data)
 end
 
 function Engine:removeEntity(entity)
-    self:call("removeEntity", entity)
     self.entities[entity] = nil
 end
 
 function Engine:clear()
-    for _, entity in pairs(self.entities) do
-        self:removeEntity(entity)
+    local entities = {}
+
+    for e, entity in pairs(self.entities) do
+        self:call("removeEntity", e)
     end
-    self.entities = {}
+
+    self.nextEntity = 1
 end
 
 function Engine:addSystem(name, system)
