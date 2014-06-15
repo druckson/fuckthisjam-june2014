@@ -20,7 +20,26 @@ function MapLoader:clearPrefabs()
     self.prefabs = {}
 end
 
+function MapLoader:process_command(value)
+    if value[1] == "unload" then
+        if #value == 1 then
+            self.engine:call("unload")
+        end
+    elseif value[1] == "load" then
+        if #value == 2 then
+            self.engine:call("load", value[2])
+        end
+    end
+end
+
+function MapLoader:unload()
+    self.engine:clear()
+    self.engine:call("clearPrefabs")
+end
+
 function MapLoader:load(file)
+    self.engine:call("unload")
+
     local data = love.filesystem.read('maps/'..file..'.json')
     local map = json.decode(data)
 
