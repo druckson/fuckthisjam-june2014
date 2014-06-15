@@ -23,6 +23,15 @@ function Graphics:addEntity(entity, entityData, data)
     end
 end
 
+function Graphics:removeEntity(entity)
+    System.removeEntity(self, entity)
+    for i, e in pairs(self.entities_sorted) do
+        if e == entity then
+            table.remove(self.entities_sorted, i)
+        end
+    end
+end
+
 function Graphics:marshallEntity(entity, data)
     if self.entities[entity] then
         local graphics = self.entities[entity].current.graphics
