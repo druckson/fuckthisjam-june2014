@@ -1,4 +1,3 @@
-local _ = require "lib/underscore/lib/underscore"
 local Class = require "lib/hump/class"
 local System = require "systems/system"
 local vector = require "lib/hump/vector"
@@ -39,8 +38,28 @@ function Physics:addEntity(entity, entityData, data)
             newShape(data.physics.shape), 1)
 
         entityData.current.physics = {
+            mass = data.physics.mass,
+            shape = data.physics.shape,
             body = body,
             fixture = fixture
+        }
+    end
+end
+
+function Physics:removeEntity(entity)
+    if self.entities[entity] then
+        self.entities[entity].current.physics.body:destroy()
+        System.removeEntity(self, entity)
+    end
+end
+
+function Physics:marshallEntity(entity, data)
+    if self.entities[entity] then
+        local physics = self.entities[entity].current.physics
+        data.physics = {
+            mass = physics.mass,
+            type = physics.body:getType(),
+            shape = physics.shape
         }
     end
 end
