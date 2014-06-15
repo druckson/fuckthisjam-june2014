@@ -48,7 +48,8 @@ end
 function Graphics:resize(width, height)
     self.cameraSize = vector(width, height)
     love.window.setMode(width, height, {
-        fullscreen = self.fullscreen
+        fullscreen = self.fullscreen,
+        fsaa = 4
     })
 end
 
