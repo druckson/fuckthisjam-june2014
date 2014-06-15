@@ -63,7 +63,7 @@ function Graphics:mousepressed(x, y, key)
     self.engine:call("mousepressed_world", cx, cy, key)
 end
 
-function Graphics:key_command(key)
+function Graphics:input_start(input)
     if key == "f" then
         self.fullscreen = not self.fullscreen
         love.window.setMode(love.graphics.getWidth(), love.graphics.getHeight(), {
@@ -72,31 +72,31 @@ function Graphics:key_command(key)
     end
 end
 
-function Graphics:key_held(dt, keys)
+function Graphics:input_held(dt, keys)
     speed = 10
     turnSpeed = 1
     zoomSpeed = 0.99
 
-    if keys("w") then
+    if keys("up") then
         self.cameraPosition.y = self.cameraPosition.y + dt*speed
     end
-    if keys("s") then
+    if keys("down") then
         self.cameraPosition.y = self.cameraPosition.y - dt*speed
     end
-    if keys("a") then
+    if keys("left") then
         self.cameraPosition.x = self.cameraPosition.x + dt*speed
     end
-    if keys("d") then
+    if keys("right") then
         self.cameraPosition.x = self.cameraPosition.x - dt*speed
     end
 
     self.engine:call("camera_changed", self.cameraPosition)
 
-    if keys("q") then
+    if keys("zoomIn") then
         --self.cameraRotation = self.cameraRotation + dt*turnSpeed
         self.scale = self.scale * zoomSpeed
     end
-    if keys("e") then
+    if keys("zoomOut") then
         --self.cameraRotation = self.cameraRotation - dt*turnSpeed
         self.scale = self.scale / zoomSpeed
     end

@@ -25,7 +25,16 @@ function love.load()
         worldScale = 1,
         gravity = 20,
         backgroundColor = {0, 30, 60, 255},
-        foregroundColor = {150, 150, 150, 255}
+        foregroundColor = {150, 150, 150, 255},
+        key_bindings = {
+            w = "up",
+            a = "left",
+            s = "down",
+            d = "right",
+            q = "zoomOut",
+            e = "zoomIn",
+            escape = "quit"
+        }
     })
 
     -- Wire up love calls

@@ -42,7 +42,20 @@ function Engine:addSystem(name, system)
     self.systemsByName[name] = system
 end
 
-function Engine:update(dt)
+function Engine:input_start(input)
+    if input == "quit" then
+        self:call("quit")
+    end
+end
+
+function Engine:process_command(command)
+    if command[1] == "quit" then
+        self:call("quit")
+    end
+end
+
+function Engine:quit()
+    love.event.quit()
 end
 
 function Engine:call(name, ...)

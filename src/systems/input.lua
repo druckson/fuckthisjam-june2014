@@ -8,11 +8,13 @@ local Input = Class{
     init = function(self)
         self.state = STATE_NORMAL
         self.current_command = ""
+        self.key_bindings = {}
     end
 }
 
 function Input:config(engine, data)
     self.engine = engine
+    self.key_bindings = data.key_bindings
 end
 
 function Input:debug_print(f)
@@ -26,9 +28,24 @@ function Input:set_state(state)
 end
 
 function Input:update(dt)
+    local this = self
     if self.state == STATE_NORMAL then
-        self.engine:call("key_held", dt, love.keyboard.isDown)
+        self.engine:call("input_held", dt, function(input)
+            for k, v in pairs(this.key_bindings) do
+                if v == input then
+                    if love.keyboard.isDown(k) then
+                        return true
+                    end
+                end
+            end
+
+            return false
+        end)
     end
+end
+
+function Input:bindKey(key, input)
+    self.key_bindings[key] = input
 end
 
 function Input:keypressed(key)
@@ -36,7 +53,9 @@ function Input:keypressed(key)
         if key == ";" then
             self:set_state(STATE_COMMAND)
         else
-            self.engine:call("key_command", key)
+            if self.key_bindings[key] then
+                self.engine:call("input_start", self.key_bindings[key])
+            end
         end
     elseif self.state == STATE_COMMAND then
         if key == "escape" then
@@ -49,6 +68,14 @@ function Input:keypressed(key)
             self:set_state(STATE_NORMAL)
         elseif string.len(key) == 1 then
             self.current_command = self.current_command..key
+        end
+    end
+end
+
+function Input:keyreleased(key)
+    if self.state == STATE_NORMAL then    
+        if self.key_bindings[key] then
+            self.engine:call("input_start", self.key_bindings[key])
         end
     end
 end
